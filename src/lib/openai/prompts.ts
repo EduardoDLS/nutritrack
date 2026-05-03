@@ -76,12 +76,17 @@ Reglas:
 - Optimiza para variedad y menor gasto en supermercado (preferir opciones que compartan ingredientes)
 - Cada día debe tener los 5 tiempos: desayuno, almuerzo, comida, colacion, cena
 
-Responde ÚNICAMENTE con un JSON válido con esta estructura:
+Responde ÚNICAMENTE con un JSON válido con esta estructura exacta (los 7 días completos):
 {
-  "lunes": { "desayuno": 1, "almuerzo": 2, "comida": 1, "colacion": 2, "cena": 1 },
-  "martes": { ... },
-  ...
-}`
+  "lunes":    { "desayuno": 1, "almuerzo": 1, "comida": 1, "colacion": 1, "cena": 1 },
+  "martes":   { "desayuno": 1, "almuerzo": 1, "comida": 1, "colacion": 1, "cena": 1 },
+  "miercoles":{ "desayuno": 1, "almuerzo": 1, "comida": 1, "colacion": 1, "cena": 1 },
+  "jueves":   { "desayuno": 1, "almuerzo": 1, "comida": 1, "colacion": 1, "cena": 1 },
+  "viernes":  { "desayuno": 1, "almuerzo": 1, "comida": 1, "colacion": 1, "cena": 1 },
+  "sabado":   { "desayuno": 1, "almuerzo": 1, "comida": 1, "colacion": 1, "cena": 1 },
+  "domingo":  { "desayuno": 1, "almuerzo": 1, "comida": 1, "colacion": 1, "cena": 1 }
+}
+Sustituye cada número con el número de opción real (1 o 2) según las opciones disponibles para ese tiempo de comida.`
 }
 
 export function buildShoppingListPrompt(
