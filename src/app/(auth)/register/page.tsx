@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -17,7 +18,11 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } },
+    })
     if (error) {
       setError(error.message)
       setLoading(false)
@@ -32,9 +37,20 @@ export default function LoginPage() {
       <div className="w-full max-w-sm bg-card rounded-3xl shadow-sm p-8 space-y-6">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold text-foreground">NutriTrack</h1>
-          <p className="text-muted-foreground text-sm">Inicia sesión para continuar</p>
+          <p className="text-muted-foreground text-sm">Crea tu cuenta</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-foreground">Nombre</label>
+            <input
+              type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+              className="w-full h-10 px-4 rounded-full border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              placeholder="Tu nombre"
+            />
+          </div>
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-foreground">Correo</label>
             <input
@@ -53,8 +69,9 @@ export default function LoginPage() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
+              minLength={6}
               className="w-full h-10 px-4 rounded-full border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              placeholder="••••••••"
+              placeholder="Mínimo 6 caracteres"
             />
           </div>
           {error && <p className="text-destructive text-sm">{error}</p>}
@@ -63,13 +80,13 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full h-11 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
           >
-            {loading ? 'Entrando...' : 'Entrar'}
+            {loading ? 'Creando cuenta...' : 'Crear cuenta'}
           </Button>
         </form>
         <p className="text-center text-sm text-muted-foreground">
-          ¿No tienes cuenta?{' '}
-          <Link href="/register" className="text-primary font-medium">
-            Regístrate
+          ¿Ya tienes cuenta?{' '}
+          <Link href="/login" className="text-primary font-medium">
+            Inicia sesión
           </Link>
         </p>
       </div>

@@ -80,7 +80,7 @@ export async function POST(request: Request) {
 
   const { data, error } = await supabase
     .from('measurements')
-    .insert(clean)
+    .insert({ ...clean, user_id: user.id })
     .select()
     .single()
 

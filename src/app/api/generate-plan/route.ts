@@ -36,7 +36,7 @@ export async function POST() {
 
   const { data: newPlan, error: insertError } = await supabase
     .from('weekly_plans')
-    .insert({ week_start: weekStart, plan, is_active: true })
+    .insert({ week_start: weekStart, plan, is_active: true, user_id: user.id })
     .select()
     .single()
 
@@ -53,7 +53,7 @@ export async function POST() {
 
   await supabase
     .from('shopping_lists')
-    .insert({ weekly_plan_id: newPlan.id, items })
+    .insert({ weekly_plan_id: newPlan.id, items, user_id: user.id })
 
   return Response.json({ plan: newPlan })
 }

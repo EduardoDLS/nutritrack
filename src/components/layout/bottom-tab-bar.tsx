@@ -25,11 +25,12 @@ export function BottomTabBar() {
               key={href}
               href={href}
               aria-label={label}
-              className={cn(
+              style={{ touchAction: 'manipulation' }}
+            className={cn(
                 'flex flex-col items-center justify-center w-11 h-10 rounded-xl transition-all duration-200',
                 active
                   ? 'bg-primary/12 text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
+                  : 'text-muted-foreground'
               )}
             >
               <Icon className={cn('size-5', active && 'stroke-[2.5px]')} />
