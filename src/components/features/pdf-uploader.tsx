@@ -35,7 +35,6 @@ export function PdfUploader() {
       setStatus('error')
       setMessage(data.error ?? 'Error al procesar el PDF')
     } else {
-      const data = await res.json()
       const parts = []
       if (data.saved?.menu) parts.push('menú actualizado')
       if (data.saved?.mediciones) parts.push('mediciones guardadas')

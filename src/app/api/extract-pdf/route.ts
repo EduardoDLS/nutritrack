@@ -32,11 +32,12 @@ export async function POST(request: Request) {
   // Guardar menú si viene en el PDF — reemplaza el anterior del usuario
   if (result.menu?.length) {
     await supabase.from('menu_options').delete().eq('user_id', user.id)
-    const rows = result.menu.map((o: { meal_time: string; option_number: number; title: string; ingredients: unknown[] }) => ({
+    const rows = result.menu.map((o: { meal_time: string; option_number: number; title: string; ingredients: unknown[]; preparation?: string }) => ({
       meal_time: o.meal_time,
       option_number: o.option_number,
       title: o.title,
       ingredients: o.ingredients ?? [],
+      preparation: o.preparation ?? null,
       user_id: user.id,
     }))
     await supabase.from('menu_options').insert(rows)

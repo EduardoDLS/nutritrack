@@ -12,6 +12,7 @@ Devuelve ÚNICAMENTE un JSON válido con esta estructura (omite las secciones qu
       "meal_time": "desayuno" | "almuerzo" | "comida" | "colacion" | "cena",
       "option_number": 1 | 2,
       "title": "Nombre corto de la opción",
+      "preparation": "Instrucciones de preparación tal como aparecen en el PDF, o null si no hay",
       "ingredients": [
         { "name": "nombre", "quantity": "cantidad", "unit": "unidad opcional" }
       ]

@@ -7,6 +7,7 @@ export interface MenuOption {
   option_number: 1 | 2
   title: string
   ingredients: Ingredient[]
+  preparation?: string
   created_at: string
 }
 
