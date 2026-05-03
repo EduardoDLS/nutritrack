@@ -16,23 +16,27 @@ export function BottomTabBar() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center h-16 bg-card border-t border-border max-w-[430px] mx-auto">
-      {tabs.map(({ href, icon: Icon, label }) => {
-        const active = pathname === href
-        return (
-          <Link
-            key={href}
-            href={href}
-            aria-label={label}
-            className={cn(
-              'flex flex-col items-center justify-center w-12 h-12 rounded-2xl transition-colors',
-              active ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            <Icon className={cn('size-5', active && 'stroke-[2.5px]')} />
-          </Link>
-        )
-      })}
-    </nav>
+    <div className="fixed bottom-4 left-0 right-0 z-50 flex justify-center px-5 max-w-[430px] mx-auto">
+      <nav className="flex justify-around items-center w-full h-14 bg-card/90 backdrop-blur-md rounded-2xl shadow-lg border border-border/50 px-2">
+        {tabs.map(({ href, icon: Icon, label }) => {
+          const active = pathname === href
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-label={label}
+              className={cn(
+                'flex flex-col items-center justify-center w-11 h-10 rounded-xl transition-all duration-200',
+                active
+                  ? 'bg-primary/12 text-primary'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <Icon className={cn('size-5', active && 'stroke-[2.5px]')} />
+            </Link>
+          )
+        })}
+      </nav>
+    </div>
   )
 }
