@@ -1,5 +1,65 @@
 import type { MenuOption } from '@/types'
 
+export const EXTRACT_PDF_PROMPT = `Eres un asistente de nutrición. Analiza el texto de un PDF de un nutriólogo y extrae TODO lo que encuentres.
+
+Devuelve ÚNICAMENTE un JSON válido con esta estructura (omite las secciones que no encuentres en el PDF):
+
+{
+  "tipo": "menu" | "mediciones" | "ambos",
+
+  "menu": [
+    {
+      "meal_time": "desayuno" | "almuerzo" | "comida" | "colacion" | "cena",
+      "option_number": 1 | 2,
+      "title": "Nombre corto de la opción",
+      "ingredients": [
+        { "name": "nombre", "quantity": "cantidad", "unit": "unidad opcional" }
+      ]
+    }
+  ],
+
+  "mediciones": {
+    "fecha": "YYYY-MM-DD",
+    "peso": number | null,
+    "imc": number | null,
+    "grasa_pct_bascula": number | null,
+    "grasa_kg": number | null,
+    "musculo_pct": number | null,
+    "musculo_kg": number | null,
+    "agua_pct": number | null,
+    "grasa_visceral": number | null,
+    "masa_osea": number | null,
+    "c_brazo_relajado": number | null,
+    "c_brazo_contraido": number | null,
+    "diferencia_brazo": number | null,
+    "c_pecho": number | null,
+    "c_cintura": number | null,
+    "c_abdominal": number | null,
+    "c_cadera": number | null,
+    "c_gluteo": number | null,
+    "c_cuadricep": number | null,
+    "c_cuadricep_max": number | null,
+    "c_pantorrilla_max": number | null,
+    "p_bicipital": number | null,
+    "p_tricipital": number | null,
+    "p_subescapular": number | null,
+    "p_suprailiaco": number | null,
+    "p_abdominal": number | null,
+    "p_supraespinal": number | null,
+    "p_cuadricep": number | null,
+    "p_pantorrilla": number | null,
+    "masa_muscular_total": number | null,
+    "musculo_pct_formula": number | null,
+    "grasa_4pliegues_pct": number | null,
+    "grasa_4pliegues_kg": number | null,
+    "masa_muscular_lee": number | null,
+    "masa_muscular_lee_pct": number | null
+  }
+}
+
+Si el PDF tiene varias fechas de medición, extrae solo la más reciente.
+Texto del PDF:`
+
 export function buildGeneratePlanPrompt(options: MenuOption[]): string {
   const optionsSummary = options
     .map(o => `${o.meal_time} opción ${o.option_number}: ${o.title}`)
