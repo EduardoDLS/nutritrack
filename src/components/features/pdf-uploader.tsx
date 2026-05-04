@@ -35,8 +35,18 @@ export function PdfUploader() {
       setStatus('error')
       setMessage(data.error ?? 'Error al procesar el PDF')
     } else {
+      if (data.saved?.menu) {
+        setMessage('Menú extraído, generando plan semanal y lista del super...')
+        const planRes = await fetch('/api/generate-plan', { method: 'POST' })
+        if (!planRes.ok) {
+          const planData = await planRes.json()
+          setStatus('error')
+          setMessage(planData.error ?? 'Menú guardado pero no se pudo generar el plan')
+          return
+        }
+      }
       const parts = []
-      if (data.saved?.menu) parts.push('menú actualizado')
+      if (data.saved?.menu) parts.push('menú, plan semanal y lista del super actualizados')
       if (data.saved?.mediciones) parts.push('mediciones guardadas')
       setStatus('success')
       setMessage(parts.length ? `Listo — ${parts.join(' y ')}.` : 'PDF procesado.')
