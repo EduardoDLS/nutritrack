@@ -32,7 +32,7 @@ export interface ShoppingItem {
   name: string
   quantity: string
   unit: string
-  section: 'Carnes' | 'Verduras' | 'Lácteos' | 'Abarrotes' | 'Suplementos'
+  section: 'Carnes' | 'Verduras' | 'Frutas' | 'Lácteos' | 'Abarrotes' | 'Suplementos'
   checked: boolean
 }
 

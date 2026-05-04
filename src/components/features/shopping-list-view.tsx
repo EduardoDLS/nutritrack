@@ -5,11 +5,12 @@ import { cn } from '@/lib/utils'
 import { toggleShoppingItem } from '@/lib/actions'
 import type { ShoppingList, ShoppingItem } from '@/types'
 
-const SECTION_ORDER: ShoppingItem['section'][] = ['Carnes', 'Verduras', 'Lácteos', 'Abarrotes', 'Suplementos']
+const SECTION_ORDER: ShoppingItem['section'][] = ['Carnes', 'Verduras', 'Frutas', 'Lácteos', 'Abarrotes', 'Suplementos']
 
 const SECTION_COLORS: Record<ShoppingItem['section'], string> = {
   Carnes: 'bg-rose-100 text-rose-600',
   Verduras: 'bg-sky-100 text-sky-600',
+  Frutas: 'bg-orange-100 text-orange-600',
   Lácteos: 'bg-blue-100 text-blue-600',
   Abarrotes: 'bg-yellow-100 text-yellow-600',
   Suplementos: 'bg-violet-100 text-violet-600',

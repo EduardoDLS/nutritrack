@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { openai, MODEL } from '@/lib/openai/client'
-import { buildGeneratePlanPrompt, buildShoppingListPrompt } from '@/lib/openai/prompts'
+import { buildGeneratePlanPrompt, validatePlan, enumerateIngredients, buildShoppingListPrompt } from '@/lib/openai/prompts'
 import type { MenuOption } from '@/types'
 
 export async function POST() {
@@ -18,14 +18,14 @@ export async function POST() {
     return Response.json({ error: 'No hay opciones de menú' }, { status: 400 })
   }
 
-  // 1. Generar plan semanal
   const planCompletion = await openai.chat.completions.create({
     model: MODEL,
     messages: [{ role: 'user', content: buildGeneratePlanPrompt(options as MenuOption[]) }],
     response_format: { type: 'json_object' },
   })
 
-  const plan = JSON.parse(planCompletion.choices[0].message.content ?? '{}')
+  const rawPlan = JSON.parse(planCompletion.choices[0].message.content ?? '{}')
+  const plan = validatePlan(rawPlan, options as MenuOption[])
 
   await supabase.from('weekly_plans').update({ is_active: false }).eq('is_active', true)
 
@@ -42,10 +42,11 @@ export async function POST() {
 
   if (insertError) return Response.json({ error: insertError.message }, { status: 500 })
 
-  // 2. Generar lista del super automáticamente
+  const appearances = enumerateIngredients(options as MenuOption[], plan)
+
   const listCompletion = await openai.chat.completions.create({
     model: MODEL,
-    messages: [{ role: 'user', content: buildShoppingListPrompt(options as MenuOption[], plan) }],
+    messages: [{ role: 'user', content: buildShoppingListPrompt(appearances) }],
     response_format: { type: 'json_object' },
   })
 

@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { openai, MODEL } from '@/lib/openai/client'
-import { buildShoppingListPrompt } from '@/lib/openai/prompts'
-import type { MenuOption } from '@/types'
+import { enumerateIngredients, buildShoppingListPrompt } from '@/lib/openai/prompts'
+import type { MenuOption, WeekPlan } from '@/types'
 
 export async function POST(request: Request) {
   const supabase = await createClient()
@@ -24,11 +24,14 @@ export async function POST(request: Request) {
     return Response.json({ error: 'No hay opciones de menú' }, { status: 400 })
   }
 
-  const prompt = buildShoppingListPrompt(optionsRes.data as MenuOption[], planRes.data.plan)
+  const appearances = enumerateIngredients(
+    optionsRes.data as MenuOption[],
+    planRes.data.plan as WeekPlan
+  )
 
   const completion = await openai.chat.completions.create({
     model: MODEL,
-    messages: [{ role: 'user', content: prompt }],
+    messages: [{ role: 'user', content: buildShoppingListPrompt(appearances) }],
     response_format: { type: 'json_object' },
   })
 
